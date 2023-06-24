@@ -3,7 +3,7 @@
 
 struct Node {
   char symbol;
-  struct Node* next_node;
+  struct Node* next_node = nullptr;
 };
 
 class List {

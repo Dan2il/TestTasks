@@ -1,6 +1,11 @@
 SOURCES = list.cc
 FLAG = -Wall -Werror -Wextra -g
 
+test: gtest_install
+	cd test && cmake -S . -B build
+	cd test && cmake --build build
+	cd test/build && ctest --rerun-failed --output-on-failure
+
 list.a:
 	g++ -c $(FLAG) $(SOURCES)
 	ar rcs list.a list.o
@@ -13,5 +18,16 @@ main: main.o list.a
 main.o: main.cc
 	g++ -c $(FLAG) main.cc
 
+gtest_install:
+	if test ! -d googletest; \
+	then \
+	`git clone https://github.com/google/googletest.git -b v1.13.0`; \
+	cd googletest; cmake -B build googletest/build ..; \
+	fi
+
+valgrind: test
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=_valgrind_res.txt ./test/build/ListTests
+
+
 clean:
-	rm -rf  *.o *.a main_test
+	rm -rf  *.o *.a main_test test/build

@@ -4,7 +4,8 @@ List::List(const std::string& symbols) {
   Node* push_node = &null_node;
   try {
     for (const char symbol : symbols) {
-      Node* new_node = new Node{symbol, nullptr};
+      Node* new_node = new Node;
+      new_node->symbol = symbol;
       push_node->next_node = new_node;
       push_node = push_node->next_node;
       ++size;
@@ -31,16 +32,16 @@ size_t List::Size() { return size; }
 Node& List::GetNullNode() { return null_node; }
 
 List List::Reverse() {
-  List res;
   if (size) {
-    char reverse_list[size];
+    std::string buffer;
+    buffer.resize(size);
     int index_reverse_list = size - 1;
     for (Node* next_node = null_node.next_node; next_node != nullptr;) {
-      reverse_list[index_reverse_list] = next_node->symbol;
+      buffer.at(index_reverse_list) = next_node->symbol;
       next_node = next_node->next_node;
       --index_reverse_list;
     }
-    return List(std::string(reverse_list));
+    return List(buffer);
   }
-  return res;
+  return List();
 }
