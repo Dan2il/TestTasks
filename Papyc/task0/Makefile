@@ -1,4 +1,4 @@
-SOURCES = list.cc
+SOURCES = src/list.cc
 FLAG = -Wall -Werror -Wextra -g
 
 test: gtest_install
@@ -25,9 +25,12 @@ gtest_install:
 	cd googletest; cmake -B build googletest/build ..; \
 	fi
 
+coverage: test
+	mkdir report 
+	gcovr --verbose --html-details report/coverage.html -r src .
+
 valgrind: test
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=_valgrind_res.txt ./test/build/ListTests
 
-
 clean:
-	rm -rf  *.o *.a main_test test/build
+	rm -rf  *.o *.a main_test test/build _valgrind_res.txt report
