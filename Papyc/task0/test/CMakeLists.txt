@@ -18,8 +18,8 @@ enable_testing()
 
 add_library(
     List
-    ../list.cc
-    ../list.h
+    ../src/list.cc
+    ../src/list.h
 )
 
 add_executable(

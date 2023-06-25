@@ -22,7 +22,7 @@ class List {
 
  private:
   Node null_node = {'-', nullptr};
-  unsigned int size = 0;
+  size_t size = 0;
 
   void FreeList();
 };

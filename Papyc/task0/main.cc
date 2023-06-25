@@ -1,4 +1,4 @@
-#include "list.h"
+#include "src/list.h"
 
 // самый простой вариант - использовать метод reverse
 // и std::forward_list
