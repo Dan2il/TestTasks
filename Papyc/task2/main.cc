@@ -1,52 +1,141 @@
+#include <cassert>
 #include <iostream>
 #include <string>
+#include <vector>
 
-bool CheckEntryInArray(const std::string* B, const size_t num_b,
-                       const std::string& word) {
-  for (size_t counter_b = 0; counter_b < num_b; ++counter_b) {
-    if (B[counter_b] == word) {
+bool CheckEntryInArray(std::vector<int>& indexs_search_in_B,
+                       const std::vector<std::string>& B, const size_t num_b,
+                       const std::string& student_search) {
+  for (int index : indexs_search_in_B) {
+    if (B.at(index) == student_search) {
+      indexs_search_in_B.erase((indexs_search_in_B.begin() + index));
+      return true;
+    }
+  }
+
+  for (const std::string& student : B) {
+    if (student == student_search) {
       return true;
     }
   }
   return false;
 }
 
-std::string* GetDifferentArray(const std::string* A, const size_t num_a,
-                               const std::string* B, const size_t num_b) {
-  std::string* res = nullptr;
-  if (A && num_a && B && num_b) {
-    size_t size_res = 0;
-    for (size_t counter_a = 0; counter_a < num_a; ++counter_a) {
-      if (!CheckEntryInArray(B, num_b, A[counter_a])) {
-        std::cout << size_res << std::endl;
-        res = new std::string[++size_res];
-        res[size_res - 1] = A[counter_a];
-        std::cout << res[size_res - 1] << std::endl;
+std::vector<std::string> GetDifferentArray(const std::vector<std::string>& A,
+                                           const size_t num_a,
+                                           const std::vector<std::string>& B,
+                                           const size_t num_b) {
+  std::vector<std::string> res;
+  if (!A.empty() && num_a && !B.empty() && num_b) {
+    if (num_a == num_b) {
+      return res;
+    }
+    std::vector<int> indexs_search_in_B;
+    indexs_search_in_B.resize(num_b);
+    for (size_t counter_B = 0; counter_B < num_b; ++counter_B) {
+      indexs_search_in_B.push_back(counter_B);
+    }
+
+    for (size_t counter_A = 0; counter_A < num_a; ++counter_A) {
+      if (!CheckEntryInArray(indexs_search_in_B, B, num_b, A.at(counter_A))) {
+        res.push_back(A.at(counter_A));
       }
     }
   }
   return res;
 }
 
+std::vector<std::string> Test(std::vector<std::string> old_excellent,
+                              size_t size_old,
+                              std::vector<std::string> now_excellent,
+                              size_t size_now) {
+  return GetDifferentArray(old_excellent, size_old, now_excellent, size_now);
+}
+
 int main() {
-  std::string* old_excellent = new std::string[5];
-  old_excellent[0] = "Ivanov";
-  old_excellent[1] = "Sidoerov";
-  old_excellent[2] = "Melnicov";
-  old_excellent[3] = "Mechen";
-  old_excellent[4] = "Lebedev";
-  std::string* now_excellent = new std::string[3];
-  now_excellent[0] = "Ivanov";
-  now_excellent[1] = "Sidoerov";
-  now_excellent[2] = "Melnicov";
+  std::vector<std::string> old_excellent(
+      {"Ivanov", "Sidoerov", "Melnicov", "Mechen", "Lebedev"});
+  std::vector<std::string> now_excellent({"Ivanov", "Sidoerov", "Melnicov"});
+  std::vector<std::string> result =
+      Test({"Ivanov", "Sidoerov", "Melnicov", "Mechen", "Lebedev"}, 5,
+           {"Ivanov", "Sidoerov", "Melnicov"}, 3);
 
-  std::string* result = GetDifferentArray(old_excellent, 5, now_excellent, 3);
+  assert(result.at(0) == "Mechen");
+  assert(result.at(1) == "Lebedev");
 
-  std::cout << "size = " << result->size() << std::endl;
-  std::cout << result->at(0) << std::endl;
-  std::cout << result->at(1) << std::endl;
+  result = Test(
+      {"Don Jones",          "Robert Hernandez", "Eugene Santiago",
+       "Gregory Benson",     "Mark Kelly",       "Kevin Carpenter",
+       "Joseph Mason",       "Joseph Jackson",   "Anthony Carter",
+       "Peter Sullivan",     "Brian Lee",        "Ronald Reynolds",
+       "Alfredo Ross",       "Louis Alvarez",    "Robert Foster",
+       "Thomas Simmons",     "Joseph Alexander", "Vincent Holland",
+       "Thomas Hunter",      "Richard Drake",    "Randy Brown",
+       "James Jennings",     "Jack Bell",        "Gregory Edwards",
+       "Lester Gibbs",       "Joseph Hughes",    "Frank West",
+       "Kevin Miller",       "Jessie Coleman",   "Zachary Miller",
+       "Richard Peterson",   "Carl Stone",       "Christopher Martin",
+       "Richard Edwards",    "Jesus Lawrence",   "Charles Bass",
+       "Cory Gilbert",       "Lee Jones",        "Raymond Allen",
+       "Brian Fields",       "Jose Kennedy",     "Jason Holmes",
+       "Phillip Brooks",     "Gary Bowman",      "Bobby Barber",
+       "James Jackson",      "Kevin Johnson",    "Joe Gonzales",
+       "Miguel Barton",      "Patrick Brady",    "Albert Hill",
+       "Anthony Webb",       "Adam Young",       "Alex Thomas",
+       "Richard Haynes",     "Alvin Gray",       "Wallace Johnson",
+       "James Turner",       "Jeremy Rodriguez", "Victor Ford",
+       "Martin Powers",      "John Gutierrez",   "William Perkins",
+       "Bryan Little",       "Scott Roberts",    "Daryl King",
+       "John Kim",           "Nathaniel Cox",    "Gary Jones",
+       "Jerome Todd",        "William Reed",     "Kurt Washington",
+       "Mark Atkins",        "James Graham",     "Raymond Edwards",
+       "Thomas Taylor",      "Charles Scott",    "Brian Hill",
+       "Christopher Miller", "Mark Blair",       "Carlos Brown",
+       "Gordon Brooks",      "Larry Watson",     "Christopher Gonzalez",
+       "Calvin Harris",      "Herbert Wright",   "Alfredo Dawson",
+       "Andrew Butler",      "Steven Sanchez",   "Ronald Jackson",
+       "Gilbert Myers",      "George Garner",    "James Smith",
+       "Charles Hayes",      "Lance Walker",     "Warren White",
+       "William Ward",       "Paul Taylor",      "Rodney Stevens",
+       "Chris King"},
+      100, {"Don Jones",          "Robert Hernandez", "Eugene Santiago",
+            "Gregory Benson",     "Mark Kelly",       "Kevin Carpenter",
+            "Joseph Mason",       "Joseph Jackson",   "Anthony Carter",
+            "Peter Sullivan",     "Brian Lee",        "Ronald Reynolds",
+            "Alfredo Ross",       "Louis Alvarez",    "Robert Foster",
+            "Thomas Simmons",     "Joseph Alexander", "Vincent Holland",
+            "Thomas Hunter",      "Richard Drake",    "Randy Brown",
+            "James Jennings",     "Jack Bell",        "Gregory Edwards",
+            "Lester Gibbs",       "Joseph Hughes",    "Frank West",
+            "Kevin Miller",       "Jessie Coleman",   "Zachary Miller",
+            "Richard Peterson",   "Carl Stone",       "Christopher Martin",
+            "Richard Edwards",    "Jesus Lawrence",   "Charles Bass",
+            "Cory Gilbert",       "Lee Jones",        "Raymond Allen",
+            "Brian Fields",       "Jose Kennedy",     "Jason Holmes",
+            "Phillip Brooks",     "Gary Bowman",      "Bobby Barber",
+            "James Jackson",      "Kevin Johnson",    "Joe Gonzales",
+            "Miguel Barton",      "Patrick Brady",    "Albert Hill",
+            "Anthony Webb",       "Adam Young",       "Alex Thomas",
+            "Richard Haynes",     "Alvin Gray",       "Wallace Johnson",
+            "James Turner",       "Jeremy Rodriguez", "Victor Ford",
+            "Martin Powers",      "John Gutierrez",   "William Perkins",
+            "Bryan Little",       "Scott Roberts",    "Daryl King",
+            "John Kim",           "Nathaniel Cox",    "Gary Jones",
+            "Jerome Todd",        "William Reed",     "Kurt Washington",
+            "Mark Atkins",        "James Graham",     "Raymond Edwards",
+            "Thomas Taylor",      "Charles Scott",    "Brian Hill",
+            "Christopher Miller", "Mark Blair",       "Carlos Brown",
+            "Gordon Brooks",      "Larry Watson",     "Christopher Gonzalez",
+            "Calvin Harris",      "Herbert Wright",   "Alfredo Dawson",
+            "Andrew Butler",      "Steven Sanchez",   "Ronald Jackson",
+            "Gilbert Myers",      "George Garner",    "James Smith",
+            "Charles Hayes",      "Lance Walker",     "Warren White",
+            "William Ward",       "Paul Taylor",      "Rodney Stevens"},
+      99);
 
-  delete[] old_excellent;
-  delete[] now_excellent;
-  delete[] result;
+  assert(result.at(0) == "Chris King");
+
+  result = Test({}, 5, {}, 3);
+
+  assert(result.empty());
 }
