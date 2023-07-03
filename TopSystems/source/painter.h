@@ -28,10 +28,8 @@ class Circle : public Shape {
 
   void SetPosition(const int x, const int y);
 
-  //   void Resize();
-
  protected:
-  sf::CircleShape circle;
+  sf::CircleShape circle_;
 };
 
 class Polygon : public Circle {
@@ -55,8 +53,6 @@ class Rectangle : public Shape {
 
   void SetPosition(const int x, const int y);
 
-  //   void Resize();
-
  private:
-  sf::RectangleShape rectangle;
+  sf::RectangleShape rectangle_;
 };
