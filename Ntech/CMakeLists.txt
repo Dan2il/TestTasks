@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project(S21Matrix)
+project(Matrix)
 include(FetchContent)
 FetchContent_Declare(
     googletest
@@ -17,13 +17,13 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_library(
-    s21_matrix_oop
-    matrix.cpp
-    matrix.h
+    matrix
+    matrix/matrix.cpp
+    matrix/matrix.h
 )
 
 add_executable(
-    s21_matrix_tests
+    matrix_tests
     tests/tests_methods_transpose.cpp
     tests/tests_operator_eq.cpp
     tests/tests_matrix_worker.cpp
@@ -31,10 +31,10 @@ add_executable(
 )
 
 target_link_libraries(
-    s21_matrix_tests
-    s21_matrix_oop
+    matrix_tests
+    matrix
     GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(s21_matrix_tests)
+gtest_discover_tests(matrix_tests)

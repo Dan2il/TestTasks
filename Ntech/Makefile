@@ -17,10 +17,10 @@ gtest_uninstall:
 
 coverage: test
 	mkdir report 
-	gcovr --html-details report/coverage.html  -r s21_matrix_oop .
+	gcovr --html-details report/coverage.html -r matrix .
 
 valgrind: test
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=_valgrind_res.txt ./build/s21_matrix_tests
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=_valgrind_res.txt ./build/matrix_tests
 
 style:
 	clang-format -n *.*
