@@ -157,7 +157,7 @@ class Bot:
                     ip_port = proxy.find_element(By.XPATH, ".//div[@class='right clickselect ']/b").text
                     date_time = proxy.find_element(By.XPATH, ".//div[@class='right color-success']").text
                     result_proxy.append(f"{ip_port} - {date_time}")
-                    logger.info(f"append: {f"{ip_port} - {date_time}"}")
+                    logger.info(f"append: {ip_port} - {date_time}")
                 except Exception as e:
                     logger.error(f"String processing error: {proxy.get_attribute('id')}, {e}")
         except Exception as e:
